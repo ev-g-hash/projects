@@ -1,4 +1,5 @@
 {% load static %}
+{% load goods_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,24 +11,23 @@
     <link rel="stylesheet" href={% static "deps/css/bootstrap/bootstrap.min.css" %}>
     <link rel="stylesheet" href={% static "deps/css/my_css.css" %}>
     <!-- Стиль footer-a для главной страницы -->
-
     {% block css %}
     {% endblock %}
-
     <!-- Favicons for different platforms -->
     <link rel="apple-touch-icon" sizes="180x180" href={% static "deps/favicon/apple-touch-icon.png" %}>
     <link rel="icon" type="image/png" sizes="32x32" href={% static "deps/favicon/favicon-32x32.png" %}>
     <link rel="icon" type="image/png" sizes="16x16" href={% static "deps/favicon/favicon-16x16.png" %}>
     <link rel="manifest" href={% static "deps/favicon/site.webmanifest" %}>
-
-    <title>{{ title }}</title>
-    {% comment %} ----------------------------------------- {% endcomment %}
+    <!-- шрифты -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <title>{{ title }}</title> 
 </head>
 
 <body>
+    <!-- Навигационная панель-->
     <header>
         <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
             <div class="container">
@@ -95,9 +95,11 @@
                     </button>
                     <ul class="dropdown-menu bg-dark" data-bs-theme="dark">
                         
+                        
+                        {% tag_categories as categories  %}
                         {% for category in categories %}
-                            <li><a class="dropdown-item text-white" href="{% url "catalog:index" %}">{{ category.name }}</a></li>
-                        {% endfor %}  
+                            <li><a class="dropdown-item text-white" href="{% url "catalog:index" category.slug %}">{{ category.name }}</a></li>
+                        {% endfor %}   
 
                     </ul>
                 </div>
@@ -180,7 +182,7 @@
         <div class="container">
             <div class="row mt-1">
                 <div class="col-lg-2">
-                    <!-- Пустой блок на Ваше усмотрение -->
+                    <!-- Пустой блок -->
                 </div>
                 <div class="col-lg-10">
                     <!-- Контент на странице -->
@@ -193,13 +195,15 @@
         </div>
     </section>
 
+    <!-- Футер -->
         {% block  footer %}
         {% endblock  %}
 
+    <!-- Скрипты -->
     <script src={% static "deps/js/jquery/jquery-3.7.0.min.js" %}></script>
     <script src={% static "deps/js/jquery-events.js" %}></script>
     <script src={% static "deps/js/jquery-ajax.js" %}></script>
     <script src={% static "deps/js/bootstrap/bootstrap.bundle.min.js" %}></script>
+    
 </body>
-
 </html>
