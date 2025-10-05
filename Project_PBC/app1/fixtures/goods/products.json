@@ -1,0 +1,170 @@
+[
+    {
+        "model": "goods.products",
+        "pk": 1,
+        "fields": {
+            "name": "Обложка на паспорт",
+            "slug": "oblozhka-na-pasport",
+            "description": "Обложка на паспорт, мужская, ручная работа, в стиле стимпанк, подходит для подарка на день рождение, 23 февраля, на смену паспорта 20 лет, 45 лет. Выполнено в мужской стилистике механизмов.",
+            "image": "goods_image/1_x0OMZqL.jpg",
+            "price": "2000.00",
+            "discount": "10.00",
+            "quantity": 2,
+            "category": 9
+        }
+    },
+    {
+        "model": "goods.products",
+        "pk": 2,
+        "fields": {
+            "name": "Бутылка новогодняя",
+            "slug": "butylka-novogodnyaya",
+            "description": "Украшение к новогоднему столу, подарок друзьям и близким на новый год. Ручная работа, декор, выполнено в смешанной технике, расцветка выполняется по вашему желанию. Для многоразового использования. Бутылка на Ваш выбор.",
+            "image": "goods_image/2.jpg",
+            "price": "3000.00",
+            "discount": "5.00",
+            "quantity": 1,
+            "category": 12
+        }
+    },
+    {
+        "model": "goods.products",
+        "pk": 3,
+        "fields": {
+            "name": "Кружка новый год",
+            "slug": "kruzhka-novyj-god",
+            "description": "Кружка съедобная, в подарок на новый год, друзьям, близким. Ручная работа, декор, начинка подбирается на Ваш выбор, либо на усмотрение мастера.",
+            "image": "goods_image/3.jpg",
+            "price": "1500.00",
+            "discount": "5.00",
+            "quantity": 2,
+            "category": 13
+        }
+    },
+    {
+        "model": "goods.products",
+        "pk": 4,
+        "fields": {
+            "name": "Бутылка ананас",
+            "slug": "butylka-ananas",
+            "description": "Яркий оригинальный подарок внутри бутылка с игристым вином, оформленная мандариновым сетом.",
+            "image": "goods_image/4.jpg",
+            "price": "3000.00",
+            "discount": "0.00",
+            "quantity": 3,
+            "category": 12
+        }
+    },
+    {
+        "model": "goods.products",
+        "pk": 5,
+        "fields": {
+            "name": "Букет киндер",
+            "slug": "buket-kinder",
+            "description": "Удиви своего ребёнка букетом из любимых сладостей. Сладости подбираются на Ваш выбор.",
+            "image": "goods_image/5.jpg",
+            "price": "4500.00",
+            "discount": "0.00",
+            "quantity": 5,
+            "category": 11
+        }
+    },
+    {
+        "model": "goods.products",
+        "pk": 6,
+        "fields": {
+            "name": "Домик",
+            "slug": "domik",
+            "description": "Светильник в стиле домика, яркий декор для интерьера. Подходит к новогоднему подарку, погружение в атмосферу сказки, детства.",
+            "image": "goods_image/6.jpg",
+            "price": "7000.00",
+            "discount": "0.00",
+            "quantity": 1,
+            "category": 10
+        }
+    },
+    {
+        "model": "goods.products",
+        "pk": 7,
+        "fields": {
+            "name": "Букет чупа-чупс",
+            "slug": "buket-chupa-chups",
+            "description": "Бутон цветка, оформленный чупа-чупсами, сладкий подарок для ребёнка. Выполнен в стиле цветка на длинной ножке.",
+            "image": "goods_image/7.jpg",
+            "price": "1800.00",
+            "discount": "5.00",
+            "quantity": 4,
+            "category": 11
+        }
+    },
+    {
+        "model": "goods.products",
+        "pk": 8,
+        "fields": {
+            "name": "Букет С",
+            "slug": "buket-s",
+            "description": "Букет вихрь, ручная работа, подарочный. Середина букета может быть наполнена любой начинкой, сухофрукты, орехи, сладости.",
+            "image": "goods_image/8.jpg",
+            "price": "2500.00",
+            "discount": "5.00",
+            "quantity": 2,
+            "category": 11
+        }
+    },
+    {
+        "model": "goods.products",
+        "pk": 9,
+        "fields": {
+            "name": "Домик 2",
+            "slug": "domik-2",
+            "description": "Светильник в стиле домика, яркий декор для интерьера. Подходит к новогоднему подарку, погружение в атмосферу сказки, детства.",
+            "image": "goods_image/9.jpg",
+            "price": "7500.00",
+            "discount": "10.00",
+            "quantity": 1,
+            "category": 10
+        }
+    },
+    {
+        "model": "goods.products",
+        "pk": 10,
+        "fields": {
+            "name": "Бутылка С",
+            "slug": "butylka-s",
+            "description": "Бутылка в стиле стимпанк подарок друзьям и близким. Ручная работа, декор. Для многоразового использования.",
+            "image": "goods_image/10.jpg",
+            "price": "3900.00",
+            "discount": "0.00",
+            "quantity": 3,
+            "category": 12
+        }
+    },
+    {
+        "model": "goods.products",
+        "pk": 11,
+        "fields": {
+            "name": "Ежедневник М",
+            "slug": "ezhednevnik-m",
+            "description": "Ежедневник в стиле стимпанк. Основа на Ваш выбор - блокнот, планинг.",
+            "image": "goods_image/11.jpg",
+            "price": "3700.00",
+            "discount": "0.00",
+            "quantity": 1,
+            "category": 14
+        }
+    },
+    {
+        "model": "goods.products",
+        "pk": 12,
+        "fields": {
+            "name": "Обложка на паспорт 2",
+            "slug": "oblozhka-na-pasport-2",
+            "description": "Обложка на паспорт женская. Древо времена года. Подарок на день рождение. Идеально подходит на смену паспорта 20 и 45 лет.",
+            "image": "goods_image/12.jpg",
+            "price": "2000.00",
+            "discount": "0.00",
+            "quantity": 5,
+            "category": 9
+        }
+    }
+]

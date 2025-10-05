@@ -4,7 +4,7 @@
         "pk": 8,
         "fields": {
             "name": "Все изделия",
-            "slug": "vse-izdeliya"
+            "slug": "oll"
         }
     },
     {
@@ -53,6 +53,14 @@
         "fields": {
             "name": "Ежедневники",
             "slug": "ezhednevniki"
+        }
+    },
+    {
+        "model": "goods.categories",
+        "pk": 15,
+        "fields": {
+            "name": "Разное",
+            "slug": "raznoe"
         }
     }
 ]
