@@ -1,0 +1,108 @@
+________________________________
+создание пользователя
+
+- python manage.py startapp users
+
+______________________________
+app/settings.py
+-
+INSTALLED_APPS = [
+    ...........
+
+    'users',
+]
+
+_________________________________
+users создаём папку templates
+
+________________________________
+вложенная подпапка users
+
+________________________________
+users/ создаём файл urls.py
+
+________________________________
+открываем users/views.py
+
+________________________________
+открываем app/urls.py
+
+urlpatterns = [
+    ...     ,
+    path('user/', include('users.urls', namespace='user'))
+] 
+
+________________________________
+открываем users/urls.py
+
+from django.urls import path
+from users import views
+
+app_name = "users"
+
+urlpatterns = [
+    path('login/', views.login, name='login'), 
+    path('registration/', views.registration, name='registration'),        
+    path('profile/', views.profile, name='profile'),
+    path('logout/', views.logout, name='logout'),
+]
+
+________________________________
+открываем users/views.py
+
+from django.shortcuts import render
+
+def login(request):
+    context = {
+        'title': 'Home - Авторизвция'
+    }
+    return render(request, 'users/login.html', context)
+
+def registration(request):
+    context = {
+        'title': 'Home - Регистрация'
+    }
+    return render(request, 'users/registration.html', context)
+
+def profile(request):
+    context = {
+        'title': 'Home - Кабинет'
+    }
+    return render(request, 'users/profile.html', context)
+
+def logout(request):
+    ...
+
+
+_________________________________
+создаём templates/users - login.html, registration.html, profile.html
+
+______________________________
+далее создаём основу в файлах и расширяем
+
+______________________________
+далее заходим base.html и прописываем url пути
+
+                            <a class="nav-link  text-white" href="{% url "users:login" %}">Войти</a>
+
+                                <li><a class="dropdown-item  text-white" href="{% url "users:profile" %}l">Личный кабинет</a>
+  
+                                <li><a class="dropdown-item  text-white" href="{% url "users:logout" %}">Выйти</a></li>
+
+______________________________
+далее заходим login.html и прописываем url путь
+
+ <a href="#">Забыли пароль?</a> | <a href="{% url "users:registration" %}">Создать аккаунт</a>
+
+________________________________
+подгрузи статику по иконкам
+
+______________________________
+удаляем разметку корзины из profile.html
+
+
+
+
+
+
+
