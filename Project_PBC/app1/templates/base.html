@@ -187,10 +187,11 @@
                     <!-- Пустой блок -->
                 </div>
                 <div class="col-lg-10">
-                    <!-- Контент на странице -->
 
+                    <!-- Контент на странице -->
+                    {% include "includes/notifications.html" %}
                     {% block content %}
-                    {% endblock %}
+                    {% endblock %} 
 
                 </div>
             </div>

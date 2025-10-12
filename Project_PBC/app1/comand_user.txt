@@ -100,8 +100,262 @@ ________________________________
 ______________________________
 удаляем разметку корзины из profile.html
 
+обнуляем бд - заходим в постгрес удаляем home и создаём заново
+
+далее
+______________________________
+открываем users/models.py
+
+from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 
+class User(AbstractUser):
+    image = models.ImageField(upload_to='users_images', blank=True, null=True, verbose_name='Аватар')
+    
+    class Meta:
+        db_table = 'user'
+        verbose_name = 'Пользователя'
+        verbose_name_plural = 'Пользователи'  
+        
+    def __str__(self):
+        return self.username
+______________________________
+
+Регистрация модели
+открываем users/admin.py
+
+from django.contrib import admin
+from users.models import User
+
+
+admin.site.register(User)
+
+______________________________
+Присвоение имени в админке
+открываем users/apps.py
+
+from django.apps import AppConfig
+
+class UsersConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'users'
+    verbose_name = 'Пользователи'
+
+______________________________
+открываем app/settings.py
+и в самом низу
+
+нужно дописать какую модель использовать вместо auth.user
+AUTH_USER_MODEL = 'users.User'
+
+далее делаем миграции
+python manage.py makemigrations
+python manage.py migrate
+
+python manage.py createsuperuser 
+
+python manage.py loaddata fixtures/goods/categories.json
+python manage.py loaddata fixtures/goods/products.json
+
+заходим в админку проверяем
+всё ок
+
+открываем
+users/templates/login.html
+**********
+   <form action="{% url "user:login"%}" method="post">
+      ************                                  
+                                        <div class="mb-3">
+                                            <label for="username" class="form-label">Имя пользователя</label>
+                                            <input type="text" class="form-control" id="username" placeholder="Введите ваше имя пользователя" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">Пароль</label>
+                                            <input type="password" class="form-control" id="password" placeholder="Введите ваш пароль" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-dark btn-block">Войти</button>
+                                    </form>
+
+__________________________
+в папке users создаём файл - forms.py
+и пишем код
+
+from django import forms
+from django.contrib.auth.forms import AuthenticationForm
+
+from users.models import User
+
+
+class UserLoginForm(AuthenticationForm):
+    class Meta:
+        model = User
+__________________________
+
+открываем users/views.py
+
+from django.contrib import auth
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse
+
+from users.forms import UserLoginForm
+
+def login(request):
+    if request.method == 'POST':
+        form = UserLoginForm(data=request.POST)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = auth.authenticate(username=username, password=password)
+            if user:
+                auth.login(request, user)
+                return HttpResponseRedirect(reverse('main:index'))
+    
+    
+    else:
+        form = UserLoginForm()
+    context = {
+        'title': 'Home - Авторизвция',
+        'form': form
+    }
+    return render(request, 'users/login.html', context)
+
+def registration(request):
+    context = {
+        'title': 'Home - Регистрация'
+    }
+    return render(request, 'users/registration.html', context)
+
+def profile(request):
+    context = {
+        'title': 'Home - Кабинет'
+    }
+    return render(request, 'users/profile.html', context)
+
+def logout(request):
+    ...
+
+______________________________
+
+заходим в login.html и всё что находится в теге form коментируем
+
+                                        {% comment %} <div class="mb-3">
+                                            <label for="username" class="form-label">Имя пользователя</label>
+                                            <input type="text" class="form-control" id="username" placeholder="Введите ваше имя пользователя" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">Пароль</label>
+                                            <input type="password" class="form-control" id="password" placeholder="Введите ваш пароль" required>
+                                        </div>{% comment %}
+
+                                        <button type="submit" class="btn btn-dark btn-block">Войти</button>
+
+______________________________
+и ниже код то что оставляем
+
+                                    <form action="{% url "user:login"%}" method="post">
+                                    {% csrf_token %}
+                                            {{ form }}
+                                    <button type="submit" class="btn btn-dark btn-block">Войти</button> 
+                                    </form>
+
+проверяем всё работает!!!!!!!!!!!!!!!!!
+
+__________________
+
+открываем forms.py
+from django import forms
+from django.contrib.auth.forms import AuthenticationForm
+
+from users.models import User
+
+
+class UserLoginForm(AuthenticationForm):
+
+    username = forms.CharField()
+    password = forms.CharField()
+
+    # username = forms.CharField(
+    #     widget=forms.TextInput(attrs={"autofocus": True,
+    #                                 'class': 'form-control',
+    #                                 'placeholder': 'Введите ваше имя пользователя'})
+    # )
+
+    # password = forms.CharField(
+    #     widget=forms.PasswordInput(attrs={"autocomplete": "current-password",
+    #                                       'class': 'form-control',
+    #                                       'placeholder': 'Введите ваш пароль'})
+    # )
+    
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+_____________________________________
+
+открываем login.py
+                                    <form action="{% url "user:login"%}" method="post">
+                                        {% csrf_token %}
+
+                                        <div class="mb-3">
+                                            <label for="id_username" class="form-label">Имя пользователя</label>
+                                            <input type="text" class="form-control" value="{% if form.username.value %}{{ form.username.value }}{% endif %}" name="username" id="id_username" placeholder="Введите ваше имя пользователя" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="id_password" class="form-label">Пароль</label>
+                                            <input type="password" class="form-control" name="password" id="id_password" placeholder="Введите ваш пароль" required>
+                                        </div>
+
+                                        
+                                        {% comment %} <div class="mb-3">
+                                            <label for="{{ form.username.id_for_label }}" class="form-label">Имя пользователя</label>
+                                            {{ form.username }}
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="{{ form.password.id_for_label }}" class="form-label">Пароль</label>
+                                            {{ form.password }}
+                                        </div> {% endcomment %}
+
+                                        {% comment %} <div class="mb-3">
+                                            <label for="username" class="form-label">Имя пользователя</label>
+                                            <input type="text" class="form-control" id="username" placeholder="Введите ваше имя пользователя" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">Пароль</label>
+                                            <input type="password" class="form-control" id="password" placeholder="Введите ваш пароль" required>
+                                        </div>{% endcomment %}
+                                        <button type="submit" class="btn btn-dark btn-block">Войти</button> 
+                                    </form>
+
+__________________________
+
+создаём файл notifications.html в templates/ создаём папку includes
+{% load static %}
+
+{% if form.non_field_errors %}
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="alert alert-danger alert-dismissible fade show custom-shadow" role="alert">
+                    {{ form.non_field_errors }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+
+
+вносим дополнения в base.html
+                    <!-- Контент на странице -->
+                    {% include "includes/notifications.html" %}
+                    {% block content %}
+                    {% endblock %}
+
+______________________________
+
+проверяем всё работает!!!!!!!!!!!!
 
 
 
