@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'main',
     'goods',
     'users',
+    'carts',
 ]
 
 MIDDLEWARE = [
@@ -131,7 +132,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_URL = 'real/'
+# STATIC_URL = 'real/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static'

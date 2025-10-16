@@ -1,5 +1,6 @@
 body {    
-  background-image: url("https://i.postimg.cc/Qdcs5HkD/IMG-20190616-094116.jpg");
+  /* background-image: url("https://i.postimg.cc/Qdcs5HkD/IMG-20190616-094116.jpg"); */
+  background-image: url(../images/GigaChat.jpg);
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center center;
@@ -37,9 +38,19 @@ body {
   font-size: 0.7rem;
 }
 
-.mt-5.pt-5{
-  font-size: 309%;
-  color: hsl(283, 79%, 11%);
+.mt-5.pt-5 {
+  font-size: 370%;
+  color: hsl(304, 100%, 85%);
+  text-align: left;  
+  text-decoration-line: underline;
+  font-family: "Great Vibes", cursive;
+  font-weight: 400; 
+  font-style: normal;
+}
+
+.mt-51.pt-51 {
+  font-size: 370%;
+  color: hsl(305, 14%, 18%);
   text-align: left;  
   text-decoration-line: underline;
   font-family: "Great Vibes", cursive;

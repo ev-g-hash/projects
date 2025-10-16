@@ -1,0 +1,139 @@
+---------------------------------------
+запускаем терминал и создаём приложение 
+
+python manage.py startapp carts
+
+-------------------------------------
+settings.py регистрируем приложение
+
+INSTALLED_APPS = [
+    .........
+    .........
+
+    'carts',
+]
+
+------------------------------------
+cоздаём необходимые файлы и директории
+
+папка templates и в ней вложенная подпапка carts
+
+________________________________
+файл - urls.py
+
+from django.urls import path
+from carts import views
+
+app_name = "carts"
+
+urlpatterns = [
+    path('cart_add/<int:product_id>', views.cart_add, name='cart_add'), 
+    path('cart_change/<int:product_id>', views.cart_change, name='cart_change'),        
+    path('cart_remove/<int:product_id>', views.cart_remove, name='cart_remove'),
+]
+
+________________________________
+подключаем в основном urls
+
+urlpatterns = [
+    .........
+    ......... 
+    path('cart/', include('carts.urls', namespace='cart')), 
+] 
+
+__________________________________________
+открываем views
+
+from django.shortcuts import render
+
+def cart_add(request, product_id):
+    ...
+
+def cart_change(request, product_id):
+    ...
+    
+def cart_remove(request, product_id):
+    ...
+________________________________
+открываем base.html
+
+вырезаем от разметка корзины до закончилась разметка корзины
+открываем templates/carts и создаём папку includes
+и создаём файл included_cart.html
+
+туда вставляем и вносим изменения
+
+***************
+     <a href="{% url "cart:cart_remove" 1 %}" class="remove-from-cart" data-cart-id="">
+****************
+                                                            <img class="mx-1" src={% static "deps/icons/trash3-fill.svg" %}
+                                                                alt="Catalog Icon" width="16" height="16">
+                                                        </a>
+
+возвращаемся в base.html и инклудим
+
+откуда вырезали
+
+                                    <!-- Разметка корзины -->
+                                    {% include "carts/includes/included_cart.html" %}
+                                    <!-- Закончилась разметка корзины -->
+
+открываем profile.html
+там находим разметка корзины и вставляем
+                                    <!-- Разметка корзины -->
+                                    {% include "carts/includes/included_cart.html" %}
+                                    <!-- Закончилась разметка корзины -->
+
+
+открываем urls.py в папке users
+
+urlpatterns = [
+    path('login/', views.login, name='login'), 
+    path('registration/', views.registration, name='registration'),        
+    path('profile/', views.profile, name='profile'),
+    **************
+    path('users-cart/', views.users_cart, name='users-cart'),
+    ***********
+    path('logout/', views.logout, name='logout'),
+]
+
+открываем файл views и делаем контроллер под эту страницу
+
+def users_cart(request):
+    return render(request, 'users/users_cart.html')
+
+потом создаём users_cart.html
+
+{% extends "base.html" %}
+
+{% block content %}
+                    <div class="row">
+                        <div class="container mt-5">
+                            <div class="row justify-content-center">
+                                <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">
+                                    <h3 class="text-center mb-4">Корзина</h3>
+                                    <div class="container" id="cart-items-container">
+                                    <!-- Разметка корзины -->
+                                    {% include "carts/includes/included_cart.html" %}
+                                    <!-- Закончилась разметка корзины -->
+                                    </div>
+                                    <a class="btn btn-dark" href="../orders/create_order.html">
+                                        Оформить заказ
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+{% endblock content %}
+
+открываем base.html
+там где навигационная панель
+
+добавляем в ссылку всё это дело через ссылку на url "user:users-cart"
+
+                        <li class="nav-item">
+                            <a class="nav-link  text-white" href="{% url "user:users-cart" %}">Корзина</a>
+                        </li>
+
+заходим проверяем всё работает!!!!!!!!!!!!!!
+
