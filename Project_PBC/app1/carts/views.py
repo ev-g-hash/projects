@@ -9,4 +9,4 @@ def cart_change(request, product_id):
 def cart_remove(request, product_id):
     ...
 
- 
+  
