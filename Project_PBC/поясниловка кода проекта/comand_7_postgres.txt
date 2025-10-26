@@ -1,0 +1,165 @@
+устанавливаем postgresSQL
+
+удаляем фикстуры cats.json и prods.json
+создаём заново
+
+- python -Xutf8 ./manage.py dumpdata goods.Categories > fixtures/goods/categories.json
+- python -Xutf8 ./manage.py dumpdata goods.Products > fixtures/goods/products.json
+
+далее удаляем db.sqlite3
+
+открываем settings.py делаем настройку
+________________________________
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+____________________________________________
+
+заходим в бд создаём нового пользователя home и новую бд home
+
+открываем settings.py вносим изменения
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'home',
+        'USER': 'home',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+
+выполняем миграцию
+- python manage.py makemigrations
+- python manage.py migrate
+
+создаём суперюзера
+- python manage.py createsuperuser
+
+подгружаем фикстуры
+- python manage.py loaddata fixtures/goods/categories.json
+- python manage.py loaddata fixtures/goods/products.json
+
+проверяем сайт всё работает
+________________________________
+релевантный поиск открываем settings.py
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    *********
+    'django.contrib.postgres',
+**********
+    "debug_toolbar",
+
+    'main',
+    'goods',
+]
+
+в utils.py коментируем
+
+    # keywords = [word for word in query.split() if len(word) > 2]
+    # q_objects = Q()
+
+    # for token in keywords:
+    #     token = token
+    #     q_objects |= Q(description__icontains=token)
+    #     q_objects |= Q(name__icontains=token)
+
+   
+    # return Products.objects.filter(q_objects)
+
+далее пишем код
+
+from django.db.models import Q
+from goods.models import Products
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
+
+def q_search(query):
+    if query.isdigit() and len(query) <= 5:
+        return Products.objects.filter(id=int(query))
+    
+    vector = SearchVector("name", "description")
+    query = SearchQuery(query)
+
+    return Products.objects.annotate(rank=SearchRank(vector, query)).filter(rank__gt=0).order_by("-rank")
+
+    ________________________________
+ можно сделать чтобы поисковое слово выделялось это надо поработать с 
+вот этим
+
+>>> from django.contrib.postgres.search import SearchHeadline, SearchQuery
+>>> query = SearchQuery("red tomato")
+>>> entry = Entry.objects.annotate(
+...     headline=SearchHeadline(
+...         "body_text",
+...         query,
+...         start_sel="<span>",
+...         stop_sel="</span>",
+...     ),
+... ).get()
+>>> print(entry.headline)
+____________________________________________________
+
+далее футер и пагинацию надо сделать прилипание к низу смотри 8.48 видео
+
+создаём папку templates в корне 
+и перемещаем туда base.html
+__________________________
+в settings добавляем настройку
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        *******
+        'DIRS': [BASE_DIR / 'templates'],
+        *******
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+_____________________________
+в settings.json вносим изменения
+
+    "files.associations": {
+        "**/*.html": "html",
+        "**/templates/*/*.html": "django-html",
+        "**/templates/*/*/*.html": "django-html",
+
+        ******************************************************
+        "**/templates/*": "django-html",
+        *******************************************
+
+        "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+    },
+______________________________________
+копируем из любого html файла и через поиск делаем замену во всех найденных файлах
+{% extends "main/base.html" %}
+на
+{% extends "base.html" %}
+
+
+
+
+
+
+
+
+
